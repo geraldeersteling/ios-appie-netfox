@@ -113,6 +113,13 @@ class NFXListCell: UITableViewCell {
     
     func configForObject(_ obj: NFXHTTPModel) {
         setURL(obj.requestURL ?? "-")
+
+        if let graphQLHeader = obj.requestHeaders?["X-APOLLO-OPERATION-NAME"] as? String {
+            setGraphQLFunctionName(graphQLHeader)
+        }
+
+        setGraphQLFunctionName("FetchPageEntries")
+
         setStatus(obj.responseStatus ?? 999)
         setTimeInterval(obj.timeInterval ?? 999)
         setRequestTime(obj.requestTime ?? "-")
@@ -123,6 +130,10 @@ class NFXListCell: UITableViewCell {
     
     func setURL(_ url: String) {
         URLLabel.text = url
+    }
+
+    func setGraphQLFunctionName(_ name: String) {
+        URLLabel.text?.append("\n[Query: \(name)]")
     }
     
     func setStatus(_ status: Int) {
